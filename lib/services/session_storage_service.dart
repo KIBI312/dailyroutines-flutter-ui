@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:dailyroutines/constants/api_path.dart';
 import 'package:dailyroutines/models/token_model.dart';
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -33,6 +35,11 @@ class SessionStorageService {
     var tokenJson = _prefs!.getString('tokenData');
     if (tokenJson == null) return null;
     return TokenModel.fromJson(jsonDecode(tokenJson)).refreshToken;
+  }
+
+  bool checkSession() {
+    debugPrint(_prefs!.getString('tokenData'));
+    return _prefs!.getString('tokenData') != null;
   }
 
   void clearUserData() {
