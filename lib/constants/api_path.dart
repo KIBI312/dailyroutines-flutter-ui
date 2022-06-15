@@ -10,4 +10,6 @@ class ApiPath {
   static final Uri KEYCLOAK_LOGOUT = Uri.parse(
       '$baseKeycloakUrl/auth/realms/spring-realm/protocol/openid-connect/logout');
   static final Uri SECURED_PATH = Uri.parse('$baseApiUrl/schedule/getRoutines');
+  static final Uri ROUTINES_LIST =
+      Uri.parse('$baseApiUrl/schedule/getRoutines');
 }

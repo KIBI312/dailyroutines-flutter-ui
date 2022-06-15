@@ -1,14 +1,12 @@
+import 'package:dailyroutines/components/nav_drawer.dart';
 import 'package:dailyroutines/constants/api_path.dart';
 import 'package:dailyroutines/models/api_response.dart';
 import 'package:dailyroutines/models/server_message.dart';
-import 'package:dailyroutines/pages/login_page.dart';
 import 'package:dailyroutines/services/rest_api_service.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({Key? key, required this.username}) : super(key: key);
   final String title = 'Home Page';
-  final String username;
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -53,33 +51,8 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
         appBar: AppBar(
           title: Text(widget.title),
-          leading: GestureDetector(
-            onTap: () {
-              debugPrint("Future menu");
-            },
-            child: Icon(
-              Icons.menu,
-            ),
-          ),
-          actions: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(top: 20.0),
-              child: Text("Username: ${widget.username}"),
-            ),
-            Padding(
-                padding: EdgeInsets.only(right: 40.0),
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => LoginPage()));
-                  },
-                  child: Icon(
-                    Icons.portrait,
-                    size: 26.0,
-                  ),
-                ))
-          ],
         ),
+        drawer: NavDrawer(),
         body: Center(
           child: Container(
             padding: EdgeInsets.all(20),

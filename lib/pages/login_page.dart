@@ -1,5 +1,4 @@
 import 'package:dailyroutines/constants/project_colors.dart';
-import 'package:dailyroutines/flutter_api_demo_app.dart';
 import 'package:dailyroutines/pages/home_page.dart';
 import 'package:dailyroutines/services/auth_service.dart';
 import 'package:flutter/material.dart';
@@ -17,11 +16,6 @@ class LoginPage extends StatelessWidget {
   Future<int> attemptLogIn(String username, String password) async {
     var authService = await AuthService.getInstance();
     return authService.authenticateUser(username, password);
-  }
-
-  Future<int> attemptLogOut() async {
-    var authService = await AuthService.getInstance();
-    return authService.logoutUser();
   }
 
   @override
@@ -52,11 +46,8 @@ class LoginPage extends StatelessWidget {
                   var statusCode =
                       await attemptLogIn(username, _passwordController.text);
                   if (statusCode == 200) {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                HomePage(username: username)));
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => HomePage()));
                   } else {
                     displayDialog(context, "Something went wrong",
                         "No account was found matching that username and password");
@@ -67,24 +58,6 @@ class LoginPage extends StatelessWidget {
                   primary: ProjectColors.turqoise,
                   textStyle: TextStyle(color: ProjectColors.blue1),
                 ),
-              ),
-              ElevatedButton(
-                onPressed: () async {
-                  var statusCode = await attemptLogOut();
-                  if (statusCode == 204) {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => HomePage(username: "LogIn")));
-                  } else {
-                    displayDialog(context, "Something went wrong",
-                        "Error on logout attempt");
-                  }
-                },
-                child: Text('Logout'),
-                style: ElevatedButton.styleFrom(
-                    primary: ProjectColors.red1,
-                    textStyle: TextStyle(color: ProjectColors.blue1)),
               ),
             ],
           ),

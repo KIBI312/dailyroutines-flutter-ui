@@ -1,10 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:ffi';
 
 import 'package:dailyroutines/constants/api_path.dart';
 import 'package:dailyroutines/models/token_model.dart';
-import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -37,9 +35,12 @@ class SessionStorageService {
     return TokenModel.fromJson(jsonDecode(tokenJson)).refreshToken;
   }
 
-  bool checkSession() {
-    debugPrint(_prefs!.getString('tokenData'));
-    return _prefs!.getString('tokenData') != null;
+  Future<bool> checkSession() async {
+    if (_prefs!.getString('tokenData') != null) {
+      var res = await refreshAccessToken();
+      if (res == 200) return true;
+    }
+    return false;
   }
 
   void clearUserData() {
@@ -50,7 +51,7 @@ class SessionStorageService {
     _prefs!.remove('tokenData');
   }
 
-  Future<void> refreshAccessToken() async {
+  Future<int> refreshAccessToken() async {
     if (_authTimer != null) {
       _authTimer!.cancel();
       _authTimer = null;
@@ -64,6 +65,7 @@ class SessionStorageService {
       "refresh_token": refreshToken,
     });
     saveAccessToken(res.body);
+    return res.statusCode;
   }
 
   void _autoRefreshToken(int expiresIn) {
